@@ -7,6 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Ready, Set, Translate !</title>
+    <link hef='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,100italic,300italic,400italic,700italic,900italic' rel='stylesheet' type='text/css'>
     <link type="text/css" href="jquery/css/ui-lightness/jquery-ui-1.10.0.custom.css" rel="stylesheet" />
     <link type="text/css" href="translate_game.css" rel="stylesheet" />
 
@@ -17,7 +18,31 @@
 
   </head>
   <body>
-    <!-- Your HTML here -->
+    <!--original code from http://www.w3schools.com/html/tryit.asp?filename=tryhtml_table-->
+    <table style="width:100%">
+      <tr id="translationTitle">
+      </tr>
+      <tr>
+        <td>Spanish</td>
+        <td>English</td>    
+        <td>Answer</td>
+      </tr>
+      <tr class="unanswered">
+        <td>espejo</td>
+        <td><input type="text" name="espejo"></td>    
+        <td><button type="button">See Answer</button></td>
+      </tr>
+      <tr class="correct">
+        <td>calabaza</td>
+        <td>pumpkin</td>    
+        <td><span class="ui-icon ui-icon-check"></span></td>
+      </tr>
+      <tr class="incorrect">
+        <td>postmodernidadfffffffffffffffffffffffffffffffffffffffffffffffffffffff</td>
+        <td class="incorrect-answer">phone</td>    
+        <td>postmodernism</td>
+      </tr>
+    </table>
 
   </body>
 </html>
