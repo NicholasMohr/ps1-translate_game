@@ -20,6 +20,8 @@
   <body>
     <!--original code from http://www.w3schools.com/html/tryit.asp?filename=tryhtml_table-->
     <table style="width:100%">
+      <thead>
+
       <tr id="translationTitle">
       </tr>
       <tr>
@@ -27,21 +29,19 @@
         <td>English</td>    
         <td>Answer</td>
       </tr>
-      <tr class="unanswered">
-        <td>espejo</td>
-        <td><input type="text" name="espejo"></td>    
-        <td><button type="button">See Answer</button></td>
-      </tr>
+    </thead>
+    <tbody id="words">
       <tr class="correct">
         <td>calabaza</td>
         <td>pumpkin</td>    
         <td><span class="ui-icon ui-icon-check"></span></td>
       </tr>
       <tr class="incorrect">
-        <td>postmodernidadfffffffffffffffffffffffffffffffffffffffffffffffffffffff</td>
+        <td>postmodernidad</td>
         <td class="incorrect-answer">phone</td>    
         <td>postmodernism</td>
       </tr>
+    </tbody>
     </table>
 
   </body>

@@ -4,7 +4,8 @@ $(function() {
 	var lang_to		= "English";
 	var lang_from		= "Spanish";
 	$("#translationTitle").html("Translate from " + lang_from + " to " + lang_to);
-	var current_dict	= dicts[lang_to][lang_from]; // keys: words in @lang_to, values: corresponding words in @lang_from 	
+	current_dict	= dicts[lang_to][lang_from]; // keys: words in @lang_to, values: corresponding words in @lang_from 	
+	var keys = Object.keys(current_dict);
 	//modified from http://stackoverflow.com/questions/8966942/get-random-element-from-associative-array-in-javascript
 	var randomWord = function(){
 		var keys = Object.keys(current_dict);
@@ -16,16 +17,78 @@ $(function() {
 	// Your code here
 	var addNewWord = function(){
 		var wordInQuestion = randomWord();
-		$(".unanswered").html(
+/*
+		$("#tableID").find('tbody')
+		    .append($('<tr>')
+		        .append($('<td>')
+		            .append($('<img>')
+		                .attr('src', 'img.png')
+		                .text('Image cell')
+		            )
+		        )
+		    );
+*/
+		$("#words").html(
+			'<tr class="unanswered">'+
+
 			'<td>'+wordInQuestion.word_from+'</td>'+
-			'<td><input type="text" name="'+wordInQuestion.word_from+'"></td>'+    
-			'<td><input id="btn1" type="button" value="See Answer" name="'+wordInQuestion.word_from+'" /></td>'
+			'<td id="unansweredcol"><input type="text" id="unansweredinput" name='+wordInQuestion.word_from+'></td>'+    
+			'<td><input id="btn1" type="button" value="See Answer" id="'+wordInQuestion.word_from+'" /></td>'+
+			'</tr>'
+			+$("#words").html()
 			);
+		$("#unansweredinput").autocomplete({
+			source: keys,
+			select: function(event,ui){
+				var unanswered = $(".unanswered");
+				var input = $("#unansweredinput");
+				var answer = input[0].value;
+				console.log(unanswered);
+				console.log(input);
+				console.log(answer);
+				console.log(current_dict[$("#unansweredinput").attr('name')]);
+				$("#unansweredcol").replaceWith('<td><span class="answerclass">' + answer + '</span></td>');
+				unanswered.removeClass("unanswered");
+				if(answer === wordInQuestion.word_to){
+					unanswered.addClass("correct");
+					$(':button').replaceWith('<span class="ui-icon ui-icon-check"></span>');
+				}else{
+					unanswered.addClass("incorrect");
+					var useranswer =  $('.answerclass');
+					useranswer.removeClass();
+					useranswer.addClass("incorrect-answer");
+					$(':button').replaceWith(wordInQuestion.word_to);
+				}
+
+		        addNewWord();
+			}
+		})
 
 		//seems risky, lets see if it pays off for him
 		$(':button').click(function(){
-			addNewWord();
+			var unanswered = $(".unanswered");
+			var input = $("#unansweredinput");
+			var answer = input[0].value;
+			console.log(unanswered);
+			console.log(input);
+			console.log(answer);
+			console.log(current_dict[$("#unansweredinput").attr('name')]);
+			$("#unansweredcol").replaceWith('<td><span class="answerclass">' + answer + '</span></td>');
+			unanswered.removeClass("unanswered");
+			if(answer === wordInQuestion.word_to){
+				unanswered.addClass("correct");
+				$(':button').replaceWith('<span class="ui-icon ui-icon-check"></span>');
+			}else{
+				unanswered.addClass("incorrect");
+				var useranswer =  $('.answerclass');
+				useranswer.removeClass();
+				useranswer.addClass("incorrect-answer");
+				$(':button').replaceWith(wordInQuestion.word_to);
+			}
+
+	        addNewWord();
 		});
+
 		$(':text').focus();
 	}
 	addNewWord();
