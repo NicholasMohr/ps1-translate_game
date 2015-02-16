@@ -37,6 +37,35 @@ $(function() {
 			'</tr>'
 			+$("#words").html()
 			);
+
+		//modified from http://stackoverflow.com/questions/13384243/listen-to-enter-key-press-on-a-text-box
+		$("#unansweredinput").bind("keypress", function(event) {
+		    if(event.which == 13) {
+		    event.preventDefault();
+        		var unanswered = $(".unanswered");
+        		var input = $("#unansweredinput");
+        		var answer = input[0].value;
+        		console.log(unanswered);
+        		console.log(input);
+        		console.log(answer);
+        		console.log(current_dict[$("#unansweredinput").attr('name')]);
+        		$("#unansweredcol").replaceWith('<td><span class="answerclass">' + answer + '</span></td>');
+        		unanswered.removeClass("unanswered");
+        		if(answer === wordInQuestion.word_to){
+        			unanswered.addClass("correct");
+        			$(':button').replaceWith('<span class="ui-icon ui-icon-check"></span>');
+        		}else{
+        			unanswered.addClass("incorrect");
+        			var useranswer =  $('.answerclass');
+        			useranswer.removeClass();
+        			useranswer.addClass("incorrect-answer");
+        			$(':button').replaceWith(wordInQuestion.word_to);
+        		}
+
+                addNewWord();		    
+		    }
+		});
+
 		$("#unansweredinput").autocomplete({
 			source: keys,
 			select: function(event,ui){
