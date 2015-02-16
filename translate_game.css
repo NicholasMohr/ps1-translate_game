@@ -16,6 +16,10 @@ table {
         border-spacing: 10px 10px;
       }
 
+#translationTitle {
+	font-size: 40px;
+}
+
 .incorrect{
 	color: red;
 }

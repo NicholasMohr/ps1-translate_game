@@ -4,30 +4,51 @@ $(function() {
 	var lang_to		= "English";
 	var lang_from		= "Spanish";
 	$("#translationTitle").html("Translate from " + lang_from + " to " + lang_to);
-	current_dict	= dicts[lang_to][lang_from]; // keys: words in @lang_to, values: corresponding words in @lang_from 	
+	var current_dict	= dicts[lang_to][lang_from]; // keys: words in @lang_to, values: corresponding words in @lang_from 	
 	var keys = Object.keys(current_dict);
+	
+	var wordInQuestion;
 	//modified from http://stackoverflow.com/questions/8966942/get-random-element-from-associative-array-in-javascript
+	/*
+		returns a random word
+	*/
 	var randomWord = function(){
 		var keys = Object.keys(current_dict);
 		var word_index = Math.floor(keys.length * Math.random())
 		var word = keys[word_index]
 	    return {word_to: word, word_from: current_dict[word]};
 	}
+
+	/*
+		reveals the answer or shows that you were correct and updates everything associated with that
+	*/
+	var seeAnswer = function(answer){
+		var unanswered = $(".unanswered");
+		var input = $("#unansweredinput");
+		$("#unansweredcol").replaceWith('<td><span class="answerclass">' + answer + '</span></td>');
+		unanswered.removeClass("unanswered");
+		if(answer === wordInQuestion.word_to){
+			var useranswer =  $('.answerclass');
+			useranswer.removeClass("answerclass");
+			unanswered.addClass("correct");
+			$(':button').replaceWith('<span class="ui-icon ui-icon-check"></span>');
+		}else{
+			unanswered.addClass("incorrect");
+			var useranswer =  $('.answerclass');
+			useranswer.removeClass("answerclass");
+			useranswer.addClass("incorrect-answer");
+			$(':button').replaceWith(wordInQuestion.word_to);
+		}
+
+        addNewWord();
+	}
 	
-	// Your code here
+	/*
+		adds a new word to the layout
+	*/
 	var addNewWord = function(){
-		var wordInQuestion = randomWord();
-/*
-		$("#tableID").find('tbody')
-		    .append($('<tr>')
-		        .append($('<td>')
-		            .append($('<img>')
-		                .attr('src', 'img.png')
-		                .text('Image cell')
-		            )
-		        )
-		    );
-*/
+		wordInQuestion = randomWord();
+
 		$("#words").html(
 			'<tr class="unanswered">'+
 
@@ -40,86 +61,28 @@ $(function() {
 
 		//modified from http://stackoverflow.com/questions/13384243/listen-to-enter-key-press-on-a-text-box
 		$("#unansweredinput").bind("keypress", function(event) {
-		    if(event.which == 13) {
-		    event.preventDefault();
-        		var unanswered = $(".unanswered");
-        		var input = $("#unansweredinput");
-        		var answer = input[0].value;
-        		console.log(unanswered);
-        		console.log(input);
-        		console.log(answer);
-        		console.log(current_dict[$("#unansweredinput").attr('name')]);
-        		$("#unansweredcol").replaceWith('<td><span class="answerclass">' + answer + '</span></td>');
-        		unanswered.removeClass("unanswered");
-        		if(answer === wordInQuestion.word_to){
-        			unanswered.addClass("correct");
-        			$(':button').replaceWith('<span class="ui-icon ui-icon-check"></span>');
-        		}else{
-        			unanswered.addClass("incorrect");
-        			var useranswer =  $('.answerclass');
-        			useranswer.removeClass();
-        			useranswer.addClass("incorrect-answer");
-        			$(':button').replaceWith(wordInQuestion.word_to);
-        		}
-
-                addNewWord();		    
+		    if(event.which == 13) { //the enter key
+		    	event.preventDefault();
+		    	seeAnswer($("#unansweredinput")[0].value);	    
 		    }
 		});
 
 		$("#unansweredinput").autocomplete({
 			source: keys,
 			select: function(event,ui){
-				var unanswered = $(".unanswered");
-				var input = $("#unansweredinput");
-				var answer = input[0].value;
-				console.log(unanswered);
-				console.log(input);
-				console.log(answer);
-				console.log(current_dict[$("#unansweredinput").attr('name')]);
-				$("#unansweredcol").replaceWith('<td><span class="answerclass">' + answer + '</span></td>');
-				unanswered.removeClass("unanswered");
-				if(answer === wordInQuestion.word_to){
-					unanswered.addClass("correct");
-					$(':button').replaceWith('<span class="ui-icon ui-icon-check"></span>');
-				}else{
-					unanswered.addClass("incorrect");
-					var useranswer =  $('.answerclass');
-					useranswer.removeClass();
-					useranswer.addClass("incorrect-answer");
-					$(':button').replaceWith(wordInQuestion.word_to);
-				}
-
-		        addNewWord();
+				seeAnswer(ui.item.value);
 			}
 		})
 
 		//seems risky, lets see if it pays off for him
 		$(':button').click(function(){
-			var unanswered = $(".unanswered");
-			var input = $("#unansweredinput");
-			var answer = input[0].value;
-			console.log(unanswered);
-			console.log(input);
-			console.log(answer);
-			console.log(current_dict[$("#unansweredinput").attr('name')]);
-			$("#unansweredcol").replaceWith('<td><span class="answerclass">' + answer + '</span></td>');
-			unanswered.removeClass("unanswered");
-			if(answer === wordInQuestion.word_to){
-				unanswered.addClass("correct");
-				$(':button').replaceWith('<span class="ui-icon ui-icon-check"></span>');
-			}else{
-				unanswered.addClass("incorrect");
-				var useranswer =  $('.answerclass');
-				useranswer.removeClass();
-				useranswer.addClass("incorrect-answer");
-				$(':button').replaceWith(wordInQuestion.word_to);
-			}
-
-	        addNewWord();
+			seeAnswer($("#unansweredinput")[0].value);
 		});
 
 		$(':text').focus();
 	}
+
+	//add our first word to get us started
 	addNewWord();
 
 	
