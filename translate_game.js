@@ -71,7 +71,8 @@ $(function() {
 			source: keys,
 			select: function(event,ui){
 				seeAnswer(ui.item.value);
-			}
+			},
+			minLength:2
 		})
 
 		//seems risky, lets see if it pays off for him

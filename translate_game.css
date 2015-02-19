@@ -14,10 +14,12 @@ td {
 table {
         border-collapse: separate;
         border-spacing: 10px 10px;
+        padding-top: 20px;
       }
 
 #translationTitle {
 	font-size: 40px;
+	margin-left: 10px;
 }
 
 .incorrect{
